@@ -850,7 +850,7 @@ while (true) {
 
             $message =
                 (DEBUG ? '' : "\r") . '[ ' . ($index + 1) . '/' . $recsCount . ' ] ' . // [ #/# ]
-                $name . ' (' . $age . 'y, ' . $location . ')';   // Name (age, location)
+                $name . ' (' . $age . 'y, ' . $location . '): ';   // Name (age, location)
 
             $index++;
 
