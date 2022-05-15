@@ -1,0 +1,185 @@
+query SelfProfileQuery {
+  me {
+    __typename
+    id
+    displayname
+    age
+    essayAlbumId
+    selfieVerifiedStatus
+    userLocation {
+      __typename
+      countryCode
+      fullName
+      id
+      publicName
+      stateCode
+    }
+    ...ApolloSelfProfilePhotos
+    hasPhotos
+    essaysWithDefaultsAndUniqueIds {
+      __typename
+      ...ApolloEssay
+    }
+    allEssays {
+      __typename
+      ...ApolloEssay
+    }
+    essayGroups {
+      __typename
+      ...ApolloEssayGroup
+    }
+    ...ApolloSelfProfileInstagram
+    badges {
+      __typename
+      name
+    }
+    totalQuestionsAnsweredCount
+    birthdate {
+      __typename
+      day
+      month
+      year
+    }
+    unitPreference
+    realname
+    ...Details
+    explicitlySetDetails {
+      __typename
+      genders
+      identityTags
+      age
+      height
+      bodyType
+      location
+      monogamy
+      lookingFor
+      relationshipStatus
+      religion
+      ethnicity
+      politics
+      education
+      occupation
+      children
+      astrologicalSign
+      knownLanguages
+      pets
+      smoking
+      drinking
+      weed
+      diet
+    }
+    linkedAccount {
+      __typename
+      user {
+        __typename
+        displayname
+        id
+      }
+      label
+      isReciprocal
+    }
+  }
+}
+
+fragment ApolloSelfProfilePhotos on User {
+  __typename
+  photos {
+    __typename
+    square400
+    caption
+  }
+}
+
+fragment ApolloSelfProfileInstagram on User {
+  __typename
+  hasInstagram
+  instagramPhotos {
+    __typename
+    original
+    caption
+  }
+}
+
+fragment Details on User {
+  __typename
+  children
+  identityTags
+  relationshipStatus
+  relationshipType
+  drinking
+  pets
+  weed
+  ethnicity
+  smoking
+  politics
+  bodyType
+  height
+  astrologicalSign
+  diet
+  knownLanguages
+  genders
+  orientations
+  pronounCategory
+  customPronouns
+  occupation {
+    __typename
+    title
+    employer
+    status
+  }
+  education {
+    __typename
+    level
+    school {
+      __typename
+      id
+      name
+    }
+  }
+  religion {
+    __typename
+    value
+    modifier
+  }
+  globalPreferences {
+    __typename
+    relationshipType {
+      __typename
+      values
+    }
+    connectionType {
+      __typename
+      values
+    }
+    gender {
+      __typename
+      values
+    }
+  }
+}
+
+fragment ApolloEssay on Essay {
+  __typename
+  id
+  title
+  groupTitle
+  groupId
+  isActive
+  isPassion
+  processedContent
+  rawContent
+  placeholder
+  picture {
+    __typename
+    id
+    square800
+  }
+}
+
+fragment ApolloEssayGroup on EssayGroup {
+  __typename
+  id
+  isPassion
+  title
+  description
+}

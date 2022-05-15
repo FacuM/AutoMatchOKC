@@ -1,0 +1,123 @@
+query GlobalPreferencesQuery($isNonMonogamous: Boolean! = false) {
+  me {
+    __typename
+    globalPreferences {
+      __typename
+      age {
+        __typename
+        isDealbreaker
+        values
+      }
+      bodyType {
+        __typename
+        isDealbreaker
+        values
+      }
+      connectionType {
+        __typename
+        isDealbreaker
+        values
+      }
+      diet {
+        __typename
+        isDealbreaker
+        values
+      }
+      distance {
+        __typename
+        isDealbreaker
+        values
+      }
+      drinking {
+        __typename
+        isDealbreaker
+        values
+      }
+      education {
+        __typename
+        isDealbreaker
+        values
+      }
+      employment {
+        __typename
+        isDealbreaker
+        values
+      }
+      ethnicity {
+        __typename
+        isDealbreaker
+        values
+      }
+      gender {
+        __typename
+        isDealbreaker
+        values
+      }
+      hasKids {
+        __typename
+        isDealbreaker
+        values
+      }
+      height {
+        __typename
+        isDealbreaker
+        values
+      }
+      identityTags {
+        __typename
+        isDealbreaker
+        values
+      }
+      languages {
+        __typename
+        isDealbreaker
+        values
+      }
+      orientation {
+        __typename
+        isDealbreaker
+        values
+      }
+      pets {
+        __typename
+        isDealbreaker
+        values
+      }
+      politics {
+        __typename
+        isDealbreaker
+        values
+      }
+      relationshipStatus @include(if: $isNonMonogamous) {
+        __typename
+        isDealbreaker
+        values
+      }
+      religion {
+        __typename
+        isDealbreaker
+        values
+      }
+      sign {
+        __typename
+        isDealbreaker
+        values
+      }
+      smoking {
+        __typename
+        isDealbreaker
+        values
+      }
+      wantsKids {
+        __typename
+        isDealbreaker
+        values
+      }
+      weed {
+        __typename
+        isDealbreaker
+        values
+      }
+    }
+  }
+}

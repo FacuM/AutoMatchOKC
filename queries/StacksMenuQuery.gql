@@ -1,0 +1,225 @@
+query StacksMenuQuery($includeProfileDetails: Boolean = false) {
+  me {
+    __typename
+    id
+    stacks {
+      __typename
+      ...ApolloDoubleTakeStack
+    }
+    likesCap {
+      __typename
+      ...ApolloLikesCap
+    }
+    hasPhotos
+    ...ApolloAdInfo
+  }
+}
+
+fragment ApolloAdInfo on User {
+  __typename
+  age
+  userLocation {
+    __typename
+    publicName
+  }
+  binaryGenderLetter
+}
+
+fragment ApolloDoubleTakeStack on Stack {
+  __typename
+  id
+  status
+  expireTime
+  votesRemaining
+  badge
+  data {
+    __typename
+    ...DoubleTakeStackUser
+    ...DoubleTakeFirstPartyAd
+    ...DoubleTakeThirdPartyAd
+    ...PromotedQuestions
+  }
+}
+
+fragment DoubleTakeStackUser on StackMatch {
+  __typename
+  stream
+  targetLikesSender
+  match {
+    __typename
+    matchPercent
+    targetLikes
+    targetLikeViaSpotlight
+    targetLikeViaSuperBoost
+    firstMessage {
+      __typename
+      attachments {
+        __typename
+        ...ProfilePhotoComment
+        ...ProfileEssayComment
+      }
+      text
+      id
+    }
+    user {
+      __typename
+      id
+      badges {
+        __typename
+        name
+      }
+      ...Details @include(if: $includeProfileDetails)
+      hasInstagram
+      photos {
+        __typename
+        id
+        caption
+        width
+        height
+        crop {
+          __typename
+          upperLeftX
+          upperLeftY
+          lowerRightX
+          lowerRightY
+        }
+        original
+        original558x800
+        square400
+        square100
+      }
+      userLocation {
+        __typename
+        publicName
+      }
+      essaysWithUniqueIds {
+        __typename
+        title
+        processedContent
+        picture {
+          __typename
+          square400
+        }
+      }
+      displayname
+      age
+      selfieVerifiedStatus
+      isOnline
+    }
+    targetVote
+    senderVote
+  }
+  profileHighlights {
+    __typename
+    ... on QuestionHighlight {
+      id
+      question
+      answer
+      explanation
+    }
+    ... on PhotoHighlight {
+      id
+      caption
+      url
+    }
+  }
+  hasSuperlikeRecommendation
+}
+
+fragment DoubleTakeFirstPartyAd on FirstPartyAd {
+  __typename
+  id
+}
+
+fragment DoubleTakeThirdPartyAd on ThirdPartyAd {
+  __typename
+  ad
+}
+
+fragment PromotedQuestions on PromotedQuestionPrompt {
+  __typename
+  promotedQuestionId
+}
+
+fragment Details on User {
+  __typename
+  children
+  identityTags
+  relationshipStatus
+  relationshipType
+  drinking
+  pets
+  weed
+  ethnicity
+  smoking
+  politics
+  bodyType
+  height
+  astrologicalSign
+  diet
+  knownLanguages
+  genders
+  orientations
+  pronounCategory
+  customPronouns
+  occupation {
+    __typename
+    title
+    employer
+    status
+  }
+  education {
+    __typename
+    level
+    school {
+      __typename
+      id
+      name
+    }
+  }
+  religion {
+    __typename
+    value
+    modifier
+  }
+  globalPreferences {
+    __typename
+    relationshipType {
+      __typename
+      values
+    }
+    connectionType {
+      __typename
+      values
+    }
+    gender {
+      __typename
+      values
+    }
+  }
+}
+
+fragment ProfilePhotoComment on ProfileCommentPhoto {
+  __typename
+  type
+  photo {
+    __typename
+    original
+    square800
+  }
+}
+
+fragment ProfileEssayComment on ProfileCommentEssay {
+  __typename
+  type
+  essayText
+  essayTitle
+}
+
+fragment ApolloLikesCap on LikesCap {
+  __typename
+  likesCapTotal
+  likesRemaining
+  viewCount
+  resetTime
+}

@@ -1,0 +1,125 @@
+query LikesYouPageQuery($nextPageKey: String) {
+  me {
+    __typename
+    ...ApolloNotificationCounts
+    ...ApolloIncomingLikes
+    promosForPage(page: LIKES_INCOMING) {
+      __typename
+      ...ApolloPromo
+    }
+  }
+}
+
+fragment ApolloNotificationCounts on User {
+  __typename
+  notificationCounts {
+    __typename
+    likesIncoming
+    likesMutual
+    messages
+    intros
+  }
+}
+
+fragment ApolloIncomingLikes on User {
+  __typename
+  likesIncomingWithPreviews(after: $nextPageKey) {
+    __typename
+    data {
+      __typename
+      ...ApolloIntroUser
+      ...ApolloFakeUser
+    }
+    pageInfo {
+      __typename
+      ...ApolloPaging
+    }
+  }
+}
+
+fragment ApolloIntroUser on Match {
+  __typename
+  firstMessage {
+    __typename
+    text
+    id
+  }
+  user {
+    __typename
+    primaryImageBlurred {
+      __typename
+      square225
+    }
+    primaryImage {
+      __typename
+      square800
+      square400
+      square225
+    }
+  }
+  ...ApolloBaseUser
+}
+
+fragment ApolloFakeUser on MatchPreview {
+  __typename
+  primaryImageBlurred {
+    __typename
+    square225
+  }
+  primaryImage {
+    __typename
+    square225
+  }
+  hasFirstMessage
+  targetSuperlikes
+}
+
+fragment ApolloBaseUser on Match {
+  __typename
+  user {
+    __typename
+    id
+    username
+    displayname
+    age
+    userLocation {
+      __typename
+      publicName
+    }
+    primaryImage {
+      __typename
+      square225
+    }
+    isOnline
+    selfieVerifiedStatus
+  }
+  matchPercent
+  senderLikeTime
+  senderLikes
+  targetLikeTime
+  targetLikes
+  senderPassed
+  isMutualLike
+  targetLikeViaSpotlight
+  targetLikeViaSuperBoost
+  targetMessageTime
+  senderVote
+  targetVote
+}
+
+fragment ApolloPaging on PageInfo {
+  __typename
+  before
+  after
+  hasMore
+  total
+}
+
+fragment ApolloPromo on Promo {
+  __typename
+  id
+  name
+  type
+  upsellType
+  featureType
+}
