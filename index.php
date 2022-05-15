@@ -14,7 +14,7 @@ define('DEFAULT_SETTINGS', [
 
     'COOKIE_FILE'            => [ 'value' => 'cookies',             'type' => 'string' ],
     'FORBIDDEN_STRINGS_FILE' => [ 'value' => 'forbidden_strings',   'type' => 'string' ],
-    'KNOWN_PROFILES_FILE'    => [ 'value' => 'known_profiles.json', 'type' => 'string' ],
+    'KNOWN_PROFILES_FILE'    => [ 'value' => 'known_profiles',      'type' => 'string' ],
 
     // Progress text max length
     'PROGRESS_MAX_LENGTH'    => [ 'value' => 80,                    'type' => 'int', 'comment' => 'characters' ],
@@ -342,7 +342,7 @@ function requestAuthCookie($fromCrash = false) {
         $authCookie = trim(fgets($handle));
 
         if (!empty($authCookie)) {
-            file_put_contents(COOKIE_FILE, $authCookie);
+            file_put_contents(COOKIE_FILE, $authCookie, LOCK_EX);
         }
 
         fclose($handle);
@@ -412,7 +412,7 @@ function parseForbiddenStrings() {
     global $forbiddenStrings;
 
     if (!file_exists(FORBIDDEN_STRINGS_FILE)) {
-        file_put_contents(FORBIDDEN_STRINGS_FILE, '');
+        file_put_contents(FORBIDDEN_STRINGS_FILE, '', LOCK_EX);
     }
 
     $forbiddenStrings = [];
@@ -556,9 +556,9 @@ function storeKnownProfile($userId) {
 
     if (!in_array($userId, $knownProfiles)) {
         $knownProfiles[] = $userId;
-    }
 
-    file_put_contents(KNOWN_PROFILES_FILE, json_encode($knownProfiles));
+        file_put_contents(KNOWN_PROFILES_FILE, $userId . PHP_EOL, FILE_APPEND);
+    }
 }
 
 /**
@@ -575,11 +575,9 @@ function readKnownProfiles() {
 
     if (file_exists(KNOWN_PROFILES_FILE)) {
         try {
-            $knownProfiles = json_decode(
-                file_get_contents(KNOWN_PROFILES_FILE), // file
-                true,                                   // assoc
-                512,                                    // depth
-                JSON_THROW_ON_ERROR                     // options
+            $knownProfiles = array_filter(
+                explode(PHP_EOL, file_get_contents(KNOWN_PROFILES_FILE)),
+                function ($line) { return !empty($line); }
             );
         } catch (Exception $e) {
             print
@@ -587,12 +585,12 @@ function readKnownProfiles() {
                 PHP_EOL .
                 'The file will be deleted and a new one will be created.' . PHP_EOL;
 
-            file_put_contents(KNOWN_PROFILES_FILE, json_encode($knownProfiles));
+            file_put_contents(KNOWN_PROFILES_FILE, '', LOCK_EX);
 
             return false;
         }
     } else {
-        file_put_contents(KNOWN_PROFILES_FILE, json_encode($knownProfiles));
+        file_put_contents(KNOWN_PROFILES_FILE, '', LOCK_EX);
     }
 
     return true;
