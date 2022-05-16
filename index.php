@@ -886,6 +886,21 @@ while (true) {
 
             if (!DEBUG) { print PHP_EOL; }
 
+            // Also append the rest of the essays
+            if (count($person['match']['user']['essaysWithUniqueIds']) > 1) {
+                unset($person['match']['user']['essaysWithUniqueIds'][0]);
+
+                $bio .= PHP_EOL;
+
+                foreach ($person['match']['user']['essaysWithUniqueIds'] as $essay) {
+                    $bio .=
+                        PHP_EOL .
+                        '=== ' . $essay['title'] . ' ===' . PHP_EOL .
+                        $essay['processedContent'] .
+                        PHP_EOL;
+                }
+            }
+
             print
                 '===> ' . ($person['targetLikesSender'] ? 'THEY LIKE YOU BACK! ' : '') .
                 (AUTO_LIKE && !ASK_BEFORE_LIKE ? 'Liked' : 'Suggested') .
