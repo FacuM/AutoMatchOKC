@@ -42,10 +42,11 @@ define('DEFAULT_SETTINGS', [
     // Minimum length of a bio to be considered relevant.
     'BIO_MIN_LENGTH'         => [ 'value' => 200,   'type' => 'int', 'comment' => 'characters' ],
 
-    'AUTO_LIKE'                      => [ 'value' => true, 'type' => 'bool'   ],
-    'ASK_BEFORE_LIKE'                => [ 'value' => true, 'type' => 'bool'   ],
-    'ASK_BEFORE_LIKE_DEFAULT_CHOICE' => [ 'value' => 'n',  'type' => 'string', 'comment' => 'y/n' ],
-    'AUTO_PASS'                      => [ 'value' => true, 'type' => 'bool'   ],
+    'ALLOW_PENPAL'                   => [ 'value' => false, 'type' => 'bool',   'comment' => 'Whether to allow suggesting international matches.' ],
+    'AUTO_LIKE'                      => [ 'value' => true,  'type' => 'bool'   ],
+    'ASK_BEFORE_LIKE'                => [ 'value' => true,  'type' => 'bool'   ],
+    'ASK_BEFORE_LIKE_DEFAULT_CHOICE' => [ 'value' => 'n',   'type' => 'string', 'comment' => 'y/n' ],
+    'AUTO_PASS'                      => [ 'value' => true,  'type' => 'bool'   ],
 ]);
 
 function stackIdToLabel($id) {
@@ -800,10 +801,14 @@ while (true) {
     $index = 0; $recsCount = 0;
 
     foreach ($result as $stack) {
+        if (!ALLOW_PENPAL && $stack['id'] == 'PENPAL') { continue; }
+
         $recsCount += count($stack['data']);
     }
 
     foreach ($result as $stack) {
+        if (!ALLOW_PENPAL && $stack['id'] == 'PENPAL') { continue; }
+
         print PHP_EOL . '=> Processing stack "' . stackIdToLabel($stack['id']) . '"... ' . PHP_EOL;
 
         foreach ($stack['data'] as $person) {
