@@ -187,6 +187,8 @@ function loadSettings() {
 
                     continue;
                 }
+
+                $settings[$key]['value'] = $value;
             } else {
                 trigger_error("Unknown setting '$key'", E_USER_WARNING);
             }
