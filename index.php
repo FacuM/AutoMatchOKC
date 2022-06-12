@@ -45,7 +45,8 @@ define('DEFAULT_SETTINGS', [
     'ASK_BEFORE_LIKE'                => [ 'value' => true,  'type' => 'bool'   ],
     'ASK_BEFORE_LIKE_DEFAULT_CHOICE' => [ 'value' => 'n',   'type' => 'string', 'comment' => 'y/n' ],
     'AUTO_PASS'                      => [ 'value' => true,  'type' => 'bool'   ],
-    'AUTO_PASS_IF_NO_LIKEBACK'       => [ 'value' => false, 'type' => 'bool'   ]
+    'AUTO_PASS_IF_NO_LIKEBACK'       => [ 'value' => false, 'type' => 'bool'   ],
+    'AUTO_PASS_DUPLICATES'           => [ 'value' => false, 'type' => 'bool'   ]
 ]);
 
 function stackIdToLabel($id) {
@@ -922,7 +923,7 @@ while (true) {
                     continue;
                 }
 
-                if (in_array($id, $knownProfiles)) {
+                if (AUTO_PASS_DUPLICATES && in_array($id, $knownProfiles)) {
                     print 'API BUG: Already liked this person, forcing pass... ';
 
                     pass($id);
